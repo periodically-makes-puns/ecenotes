@@ -1,0 +1,55 @@
+.help {
+  position: fixed;
+  bottom: 5vmin;
+  right: 5vmin;
+}
+
+@keyframes openBox {
+  0% {width: 0vmin; height: 0vmin; visibility: hidden;}
+  25% {width: 20vmin; height: 5vmin; visibility: visible; }
+  100% {width: 20vmin; height: 50vmin; visibility: visible; }
+}
+
+@keyframes closeBox {
+  100% {width: 0vmin; height: 0vmin; visibility: hidden;}
+  75% {width: 20vmin; height: 5vmin; visibility: visible; }
+  0% {width: 20vmin; height: 50vmin; visibility: visible; }
+}
+
+@keyframes openChildren {
+  0% {visibility: hidden;}
+  100% {visibility: visible;}
+}
+
+.helpBox {
+  position: absolute;
+  bottom: 7vmin;
+  right: 0vmin;
+  background-color: cornflowerblue;
+}
+
+.helpBoxClosed > * {
+  visibility: hidden;
+}
+
+.helpBoxOpen > * {
+  visibility: inherit;
+  animation: openChildren 1s normal;
+}
+
+.helpBoxClosed {
+  width: 0vmin; height: 0vmin;
+  visibility: hidden;
+  animation: closeBox 1s normal;
+}
+
+.helpBoxOpen {
+  width: 20vmin; height: 50vmin;
+  visibility: visible;
+  animation: openBox 1s normal;
+}
+
+.helpButton {
+  width: 5vmin;
+  height: 5vmin;
+}

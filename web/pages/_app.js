@@ -1,5 +1,6 @@
 import Sidebar from '../components/ui/Sidebar';
 import SvgSandbox from '../components/ui/SvgSandbox';
+import Help from '../components/ui/Help';
 import '../style/global.css';
 import Head from 'next/head'
 
@@ -11,6 +12,7 @@ function HomePage() {
   <div>
     <Sidebar />
     <SvgSandbox />
+    <Help />
   </div> </>;
 }
 
