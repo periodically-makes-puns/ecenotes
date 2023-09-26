@@ -25,7 +25,8 @@
   position: absolute;
   bottom: 7vmin;
   right: 0vmin;
-  background-color: cornflowerblue;
+  background-color: bisque;
+  overflow: hidden;
 }
 
 .helpBoxClosed > * {
@@ -47,6 +48,12 @@
   width: 20vmin; height: 50vmin;
   visibility: visible;
   animation: openBox 1s normal;
+}
+
+.githubLink {
+  position: absolute;
+  bottom: 1vmin;
+  right: 1vmin;
 }
 
 .helpButton {
