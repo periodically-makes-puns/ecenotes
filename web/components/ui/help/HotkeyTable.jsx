@@ -12,6 +12,7 @@ export default function HotkeyTable() {
       <Hotkey hotkey="L" desc="Inductor" />
       <Hotkey hotkey="C" desc="Capacitor" />
       <Hotkey hotkey="O" desc="Op Amp" />
+      <Hotkey hotkey="D" desc="Toggle Drawing Mode" />
     </tbody>
   </table>
 }
