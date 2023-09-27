@@ -1,5 +1,9 @@
-import {useEffect, useState, useRef} from 'react';
-export default function Draggable({ id, children, position, onDelete, modify }) {
+import {useEffect, useState, useRef, useContext} from 'react';
+import { ModeContext } from './ConnectionGrid';
+import styles from './draggable.module.css';
+
+export default function Draggable({ id, children, position, setPosition, savePosition, orient, setOrientation, onDelete, onLabel, modify, cLabelOffset }) {
+  savePosition ??= true;
   let [moved, _setMoved] = useState(0);
   const movedRef = useRef(moved);
   const setMoved = (data) => {
@@ -15,10 +19,16 @@ export default function Draggable({ id, children, position, onDelete, modify }) 
   }
   let [center, setCenter] = useState(position);
 
-  let [rot, setRot] = useState(0);
+  let [rot, setRot] = useState(orient);
+  const savePositionRef = useRef(savePosition);
+  const setOrientationRef = useRef(setOrientation);
+  const setPosRef = useRef(setPosition);
   const modifyRef = useRef(modify);
   const onDelRef = useRef(onDelete);
   const keyRef = useRef(id);
+  const mode = useContext(ModeContext);
+  const onLabelRef = useRef(onLabel);
+  const cLabelOffsetRef = useRef(cLabelOffset);
 
   function onKeyDown(event) {
     switch (event.key) {
@@ -55,13 +65,15 @@ export default function Draggable({ id, children, position, onDelete, modify }) 
           }
           factor *= parseInt(res, 10);
         }
-        if (!isNaN(factor)) modifyRef.current(factor);
+        if (!isNaN(factor)) modifyRef.current(keyRef.current, factor);
         break;
     } 
   }
 
   function onMouseDown(event) {
-    if (movedRef.current == 0) {
+    if (mode == "labelling") {
+      onLabelRef.current(keyRef.current, cLabelOffsetRef.current);
+    } else if (movedRef.current == 0) {
       setMoved(1);
       setStartPos({x: event.pageX, y: event.pageY});
       window.addEventListener("mousemove", onMouseMove);
@@ -91,12 +103,23 @@ export default function Draggable({ id, children, position, onDelete, modify }) 
     window.removeEventListener("mousemove", onMouseMove);
     window.removeEventListener("mouseup", onMouseUp);
     window.removeEventListener("keydown", onKeyDown);
-    setCenter(({x, y}) => {return {x: Math.floor(x / 40) * 40 + 20, y: Math.floor(y / 40) * 40 + 20}});
+    if (savePositionRef.current) {
+      setCenter(({x,y}) => {return {x: Math.floor(x / 40) * 40 + 20, y: Math.floor(y / 40) * 40 + 20}});
+    }
     event.stopPropagation();
     event.preventDefault();
   }
-
-  return <g transform={`translate(${center.x}, ${center.y}) rotate(${90 * rot})`} onMouseDown={onMouseDown}>
+  
+    useEffect(() => {
+      if (savePositionRef.current) {
+        setPosRef.current(keyRef.current, center);
+      }
+    }, [center]);
+  useEffect(() => {
+    setOrientationRef.current(keyRef.current, rot);
+  }, [center]);
+  return <g className={(moved) ? styles.moving : ""}
+  transform={`translate(${(moved && savePosition) ? center.x : position.x}, ${(moved && savePosition) ? center.y : position.y}) rotate(${90 * rot})`} onMouseDown={onMouseDown}>
     {children}
   </g>
 }

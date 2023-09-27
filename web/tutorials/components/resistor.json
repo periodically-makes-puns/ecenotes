@@ -1,0 +1,18 @@
+{
+  "deltas": [
+    {"t": 0, "text": "A resistor resists the flow of current."},
+    {"t": 0, "element": {"id": "1", "type": "resistor", "value": 2000, "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"t": 0, "text": "Its resistance is measured in Ohms."},
+    {"t": 0, "element": {"id": "2", "type": "voltage", "value": 24, "position": {"x": -60, "y": 100}, "orient": 3}},
+    {"t": 0, "conn": {"type": "v", "x": -60, "sy": 20, "ey": 60}},
+    {"t": 0, "conn": {"type": "h", "y": 20, "sx": -60, "ex": -20}},
+    {"t": 0, "conn": {"type": "h", "y": 20, "sx": 60, "ex": 100}},
+    {"t": 0, "conn": {"type": "v", "x": 100, "sy": 20, "ey": 180}},
+    {"t": 0, "element": {"id": "3", "type": "ground", "position": {"x": 100, "y": 220}, "orient": 0}},
+    {"t": 0, "conn": {"type": "h", "y": 180, "sx": -60, "ex": 100}},
+    {"t": 0, "conn": {"type": "v", "x": -60, "sy": 140, "ey": 180}},
+    {"t": 0, "element": {"id": "4", "type": "vlabel", "position": {"x": -60, "y": 20}, "orient": 0}},
+    {"t": 0, "text": "Ohm's law determines the relationship between the voltage across a resistor..."},
+    {"t": 0, "text": "and the current through it."}
+  ]
+}

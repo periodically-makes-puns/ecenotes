@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, createContext } from 'react';
 import styles from './grid.module.css';
 import Resistor from './circuit/resistor';
 import OpAmp from './circuit/opamp';
@@ -8,8 +8,12 @@ import VoltageSource from './circuit/voltage';
 import CurrentSource from './circuit/current';
 import Ground from './circuit/ground';
 import Connection from './circuit/connection';
+import CurrentLabel from './circuit/currentLabel';
+import VoltagePin from './circuit/voltagePin';
 
-export default function ConnectionGrid() {
+export const ModeContext = createContext('normal');
+
+export function ConnectionGrid() {
   let [moved, setMoved] = useState(0);
   let [startPos, setStartPos] = useState({x: 0, y: 0});
   let [center, setCenter] = useState({x: 0, y: 0});
@@ -117,7 +121,8 @@ export default function ConnectionGrid() {
 
   function onMouseDown(event) {
     setMoved(1);
-    setStartPos((mode == 'normal') ? {x: event.pageX, y: event.pageY} : coerceToPoint({x: event.pageX, y: event.pageY}));
+    if (mode == 'drawing') setStartPos(coerceToPoint({x: event.pageX, y: event.pageY}));
+    else if (mode == 'normal') setStartPos({x: event.pageX, y: event.pageY});
     event.preventDefault();
   }
 
@@ -149,11 +154,49 @@ export default function ConnectionGrid() {
   }
 
   function onDelete(key) {
-    setComponents(comp => comp.filter((val) => val.id != key));
+    setComponents(comp => comp.filter((val) => (val.id != key && val.tetherId != key)));
   }
 
   function onDeleteConn(key) {
     setConnections(conn => conn.filter((val) => val.id != key));
+  }
+
+  function setValue(key, val) {
+    setComponents(comp => comp.map((c) => (c.id == key) ? {...c, val} : c));
+  }
+
+  function setPosition(key, pos) {
+    setComponents(comp => comp.map((c) => {
+      if (c.id == key) return {...c, position: pos};
+      else if (c.tetherId == key) {
+        return {...c, position: {x: pos.x + c.offset.x, y: pos.y + c.offset.y}};
+      }
+      else return c;
+      }));
+  }
+
+  function setOrientation(key, orient) {
+    setComponents(comp => comp.map((c) => (c.id == key || c.tetherId == key) ? {...c, orient} : c));
+  }
+
+  function onLabel(key, offset) {
+    console.log("LABEL", key);
+    setComponents(comp => {
+      let tethered = comp.filter((c) => c.tetherId == key);
+      if (tethered.length > 0) return comp;
+      let c = comp.filter((c) => c.id == key)[0];
+      if (typeof c.tetherId !== 'undefined') return comp;
+      console.log("INIT", c.position, offset);
+      return [...comp, {
+        id: incUid(),
+        type: 'clabel',
+        tetherId: key,
+        val: c.val,
+        offset,
+        orient: c.orient,
+        position: {x: c.position.x + offset.x, y: c.position.y + offset.y},
+      }];
+    });
   }
 
   let onKeyDown = useCallback((event) => {
@@ -165,7 +208,8 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'resistor',
           position: {x: 20, y: 20},
-          val: 220
+          val: 220,
+          orient: 0
         }]);
         break;
       case 'o':
@@ -173,7 +217,8 @@ export default function ConnectionGrid() {
         setComponents(comp => [...comp, {
           id: incUid(),
           type: 'opamp',
-          position: {x: 20, y: 20}
+          position: {x: 20, y: 20},
+          orient: 0
         }]);
         break;
       case 'c':
@@ -182,7 +227,8 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'capacitor',
           position: {x: 20, y: 20},
-          val: 0.000001
+          val: 0.000001,
+          orient: 0
         }]);
         break;
       case 'l':
@@ -191,7 +237,8 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'inductor',
           position: {x: 20, y: 20},
-          val: 1
+          val: 1,
+          orient: 0
         }]);
         break;
       case 'v':
@@ -200,7 +247,8 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'voltage',
           position: {x: 20, y: 20},
-          val: 9
+          val: 9,
+          orient: 0
         }]);
         break;
       case 'i':
@@ -209,7 +257,8 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'current',
           position: {x: 20, y: 20},
-          val: 0.001
+          val: 0.001,
+          orient: 0
         }]);
         break;
       case 'g':
@@ -218,11 +267,27 @@ export default function ConnectionGrid() {
           id: incUid(),
           type: 'ground',
           position: {x: 20, y: 20},
-          val: 0.001
+          val: 0.001,
+          orient: 0
+        }]);
+        break;
+      case 'p':
+        event.preventDefault();
+        setComponents(comp => [...comp, {
+          id: incUid(),
+          type: 'vpin',
+          position: {x: 20, y: 20},
+          val: 0.001,
+          orient: 0
         }]);
         break;
       case 'd':
-        setMode(mode => (mode == 'normal') ? 'drawing' : 'normal');
+        event.preventDefault();
+        setMode(mode => {return {drawing: 'normal', normal: 'drawing', labelling: 'labelling'}[mode]});
+        break;
+      case 't':
+        event.preventDefault();
+        setMode(mode => {return {drawing: 'drawing', normal: 'labelling', labelling: 'normal'}[mode]});
         break;
     }
   }, [components]);
@@ -248,24 +313,42 @@ export default function ConnectionGrid() {
         <circle id="origin" cx="0" cy="0" r="5" fill="#f00"></circle>
         <rect id="rect" x={center.x-windowSize.x / 2} y={center.y-windowSize.y / 2} width="100%" height="100%" fill="url(#pattern-circles)"></rect>
         <g>
-          {components.map((val) => {
-            switch(val.type) {
-              case 'resistor':
-                return <Resistor id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'opamp':
-                return <OpAmp id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'capacitor':
-                return <Capacitor id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'inductor':
-                return <Inductor id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'voltage':
-                return <VoltageSource id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'current':
-                return <CurrentSource id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-              case 'ground':
-                return <Ground id={val.id} key={val.id} position={val.position} initialValue={val.val} onDelete={onDelete}/>;
-            }
-          })}
+          <ModeContext.Provider value={mode}>
+            {components.map((c) => {
+              let props = {
+                id: c.id,
+                key: c.id,
+                position: c.position,
+                value: c.val,
+                orient: c.orient,
+                setValue,
+                setPosition,
+                setOrientation,
+                onDelete,
+                onLabel
+              };
+              switch(c.type) {
+                case 'resistor':
+                  return <Resistor {...props}/>;
+                case 'opamp':
+                  return <OpAmp {...props}/>;
+                case 'capacitor':
+                  return <Capacitor {...props}/>;
+                case 'inductor':
+                  return <Inductor {...props}/>;
+                case 'voltage':
+                  return <VoltageSource {...props}/>;
+                case 'vpin':
+                  return <VoltagePin {...props}/>;
+                case 'current':
+                  return <CurrentSource {...props}/>;
+                case 'ground':
+                  return <Ground {...props}/>;
+                case 'clabel':
+                  return <CurrentLabel offset={c.offset} {...props}/>;
+              }
+            })}
+          </ModeContext.Provider>
         </g> 
         <g>
           {connections.map((val) => {

@@ -5,3 +5,7 @@
 .drawing {
   cursor: crosshair;
 }
+
+.labelling {
+  cursor: text;
+}

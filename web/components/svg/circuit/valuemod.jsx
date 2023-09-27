@@ -1,11 +1,10 @@
-import {useState} from 'react';
 import CircuitComponent from './generic';
 import ValueLabel from './valueLabel';
 
-export default function ValueModifiableComponent({ position, onDelete, initialValue, boundingBox, labelOffset, unit, path, ...leftover}) {
-  let [val, setVal] = useState(initialValue);
-  return <CircuitComponent position={position} boundingBox={boundingBox} modify={setVal} onDelete={onDelete} {...leftover}>
+export default function ValueModifiableComponent({ path, setValue, labelOffset, alignment, verticalAlignment, value, unit, ...leftover}) {
+  alignment ??= "end";
+  return <CircuitComponent modify={setValue} {...leftover}>
     <path d={path} fill="transparent" stroke="black" />
-    <ValueLabel position={labelOffset} alignment="end" value={val} unit={unit}></ValueLabel>
+    <ValueLabel position={labelOffset} alignment={alignment} verticalAlignment={verticalAlignment} value={value} unit={unit}></ValueLabel>
   </CircuitComponent>;
 };

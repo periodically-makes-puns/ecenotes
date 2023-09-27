@@ -1,5 +1,4 @@
 import ValueModifiableComponent from "./valuemod";
-import {useState} from 'react';
 
 const PATH = `M -40 0 h 10
 M 40 0 h -10
