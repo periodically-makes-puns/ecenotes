@@ -9,3 +9,11 @@
 .labelling {
   cursor: text;
 }
+
+.loading {
+  cursor: wait;
+}
+
+.animating {
+  cursor: not-allowed;
+}

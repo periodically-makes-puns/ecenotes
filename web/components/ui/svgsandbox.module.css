@@ -1,3 +1,29 @@
 .sandbox {
+  display: flex;
   height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.textbox {
+  position: relative;
+  top: 30%;
+  left: 30%;
+  border: 1px black;
+  background-color: #ccc;
+  z-index: 100;
+  border-style: outset;
+  max-width: 20vw;
+  width: 20vw;
+  max-height: 20vh;
+}
+
+.textbox > p.text {
+  padding: 5px;
+}
+.textbox > p {
+  margin: 0;
+  font-family: sans-serif;
 }

@@ -6,14 +6,14 @@
 
 @keyframes openBox {
   0% {width: 0vmin; height: 0vmin; visibility: hidden;}
-  25% {width: 20vmin; height: 5vmin; visibility: visible; }
-  100% {width: 20vmin; height: 50vmin; visibility: visible; }
+  25% {width: 25vmin; height: 5vmin; visibility: visible; }
+  100% {width: 25vmin; height: 60vmin; visibility: visible; }
 }
 
 @keyframes closeBox {
   100% {width: 0vmin; height: 0vmin; visibility: hidden;}
-  75% {width: 20vmin; height: 5vmin; visibility: visible; }
-  0% {width: 20vmin; height: 50vmin; visibility: visible; }
+  75% {width: 25vmin; height: 5vmin; visibility: visible; }
+  0% {width: 25vmin; height: 60vmin; visibility: visible; }
 }
 
 @keyframes openChildren {
@@ -45,7 +45,7 @@
 }
 
 .helpBoxOpen {
-  width: 20vmin; height: 50vmin;
+  width: 25vmin; height: 60vmin;
   visibility: visible;
   animation: openBox 1s normal;
 }

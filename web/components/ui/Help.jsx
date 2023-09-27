@@ -14,7 +14,10 @@ export default function Help() {
     return <div className={styles.help}>
         <div className={[styles.helpBox,helpBoxStyle].join(" ")}>
           <HotkeyTable />
-          <a className={styles.githubLink} href="https://github.com/periodically-makes-puns/ecenotes/">GitHub</a>
+          <div className={styles.githubLink}>
+          By Eric Yang.
+          <a href="https://github.com/periodically-makes-puns/ecenotes/">GitHub</a>
+          </div>
         </div>
       <button type="button" className={styles.helpButton} onClick={onClick}>?</button>
     </div>

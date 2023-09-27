@@ -1,0 +1,20 @@
+.sidebar {
+  display: flex; 
+  height: 100vh;
+  font-family: monospace;
+}
+
+.menuButton {
+  position: relative;
+  z-index: 10;
+  height: 5vmin;
+  width: 5vmin;
+  min-width: 5vmin;
+  height: 5vmin;
+  top: 3vmin;
+  left: 3vmin;
+  stroke: none;
+}
+.menu {
+  display: inline-flex;
+}

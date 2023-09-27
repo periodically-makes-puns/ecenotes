@@ -2,7 +2,8 @@
   "dependencies": {
     "next": "^13.5.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-pro-sidebar": "^1.1.0-alpha.1"
   },
   "scripts": {
     "dev": "next dev",

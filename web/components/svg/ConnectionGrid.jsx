@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, createContext } from 'react';
+import { useEffect, useState, useRef, useCallback, createContext, useContext } from 'react';
 import styles from './grid.module.css';
 import Resistor from './circuit/resistor';
 import OpAmp from './circuit/opamp';
@@ -10,10 +10,13 @@ import Ground from './circuit/ground';
 import Connection from './circuit/connection';
 import CurrentLabel from './circuit/currentLabel';
 import VoltagePin from './circuit/voltagePin';
+import PathContext from '../PathContext';
 
 export const ModeContext = createContext('normal');
 
-export function ConnectionGrid() {
+export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) {
+  let [disableInput, setDisableInput] = useState(!inputAllowed);
+  console.log(disableInput);
   let [moved, setMoved] = useState(0);
   let [startPos, setStartPos] = useState({x: 0, y: 0});
   let [center, setCenter] = useState({x: 0, y: 0});
@@ -26,6 +29,7 @@ export function ConnectionGrid() {
     return uidRef.current;
   }
   let [components, setComponents] = useState([]);
+  const addComponent = (newComp) => {setComponents(comp => [...comp, newComp])};
   let [connections, _setConnections] = useState([]);
   let setConnections = (c) => {
     _setConnections(c);
@@ -122,17 +126,16 @@ export function ConnectionGrid() {
   function onMouseDown(event) {
     setMoved(1);
     if (mode == 'drawing') setStartPos(coerceToPoint({x: event.pageX, y: event.pageY}));
-    else if (mode == 'normal') setStartPos({x: event.pageX, y: event.pageY});
-    event.preventDefault();
+    else if (mode == 'normal' || mode == 'animating') setStartPos({x: event.pageX, y: event.pageY});
   }
 
   function onMouseMove(event) {
     let dx = event.pageX - startPos.x;
     let dy = event.pageY - startPos.y;
-    if (mode == 'normal' && Math.hypot(dy, dx) > 6) {
+    if ((mode == 'normal' || mode == 'animating') && Math.hypot(dy, dx) > 6) {
       setMoved(moved => (moved == 1) ? 2 : moved);
     }
-    if (mode == 'normal' && moved == 2) {
+    if ((mode == 'normal' || mode == 'animating') && moved == 2) {
       setCenter({x: center.x - dx, y: center.y - dy});
       setStartPos({x: event.pageX, y: event.pageY});
     } else if (mode == 'drawing' && moved == 1) {
@@ -154,32 +157,53 @@ export function ConnectionGrid() {
   }
 
   function onDelete(key) {
+    if (disableInput) return;
     setComponents(comp => comp.filter((val) => (val.id != key && val.tetherId != key)));
   }
 
   function onDeleteConn(key) {
+    if (disableInput) return;
     setConnections(conn => conn.filter((val) => val.id != key));
   }
 
   function setValue(key, val) {
+    if (disableInput) return;
     setComponents(comp => comp.map((c) => (c.id == key) ? {...c, val} : c));
   }
 
   function setPosition(key, pos) {
+    if (disableInput) return;
     setComponents(comp => comp.map((c) => {
       if (c.id == key) return {...c, position: pos};
       else if (c.tetherId == key) {
-        return {...c, position: {x: pos.x + c.offset.x, y: pos.y + c.offset.y}};
+        let rotated = rotateFuncs[c.orient](c.offset);
+        return {...c, position: {x: pos.x + rotated.x, y: pos.y + rotated.y}};
       }
       else return c;
       }));
   }
+  
+  const rotateFuncs = [({x, y}) => {return {x, y}}, ({x, y}) => {return {x: -y, y: x}}, ({x, y}) => {return {x: -x, y: -y}}, ({x, y}) => {return {x: y, y: -x}}];
 
   function setOrientation(key, orient) {
-    setComponents(comp => comp.map((c) => (c.id == key || c.tetherId == key) ? {...c, orient} : c));
+    if (disableInput) return;
+    setComponents(comp => {
+      let position = comp.filter((c) => c.id == key)[0].position;
+      return comp.map((c) => {
+        if (c.id == key) return {...c, orient}
+        else if (c.tetherId == key) {
+          let rotatedOffset = rotateFuncs[orient](c.offset);
+          console.log("ROTSET", rotatedOffset);
+          return {...c, position: {x: position.x + rotatedOffset.x, y: position.y + rotatedOffset.y}, orient};
+        } else {
+          return c;
+        }
+      })
+    });
   }
 
   function onLabel(key, offset) {
+    if (disableInput) return;
     console.log("LABEL", key);
     setComponents(comp => {
       let tethered = comp.filter((c) => c.tetherId == key);
@@ -191,7 +215,7 @@ export function ConnectionGrid() {
         id: incUid(),
         type: 'clabel',
         tetherId: key,
-        val: c.val,
+        value: c.value,
         offset,
         orient: c.orient,
         position: {x: c.position.x + offset.x, y: c.position.y + offset.y},
@@ -199,18 +223,59 @@ export function ConnectionGrid() {
     });
   }
 
+  const setTextRef = useRef(setText);
+  const clearBufferRef = useRef(clearBuffer);
+  function loadExample(path) {
+    if (path != "/" && mode == "normal") {
+      setDisableInput(true);
+      setComponents([]);
+      setConnections([]);
+      clearBufferRef.current();
+      setMode("loading");
+      console.log(path);
+      fetch(`${path}.json`, {
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then((resp) => {
+        return resp.json();
+      }).then((script) => {
+        console.log(script.deltas);
+        setMode("animating");
+        let t = 0;
+        for (let item of script.deltas) {
+          t += item.dt;
+          setTimeout(() => {
+            switch(item.type) {
+              case "text": setTextRef.current(item.text); break;
+              case "connection": addConnection(item.conn); break;
+              case "component": addComponent(item.element); break;
+            }
+          }, t * 1000);
+        }
+        setTimeout(() => {
+          setMode("normal");
+          setDisableInput(false);
+          setPath("/");
+        }, t * 1000);
+      })
+    }
+  }
+
   let onKeyDown = useCallback((event) => {
+    if (disableInput) return;
     console.log(event.key);
     switch (event.key) {
       case 'r':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'resistor',
           position: {x: 20, y: 20},
-          val: 220,
+          value: 220,
           orient: 0
-        }]);
+        });
         break;
       case 'o':
         event.preventDefault();
@@ -227,7 +292,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'capacitor',
           position: {x: 20, y: 20},
-          val: 0.000001,
+          value: 0.000001,
           orient: 0
         }]);
         break;
@@ -237,7 +302,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'inductor',
           position: {x: 20, y: 20},
-          val: 1,
+          value: 1,
           orient: 0
         }]);
         break;
@@ -247,7 +312,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'voltage',
           position: {x: 20, y: 20},
-          val: 9,
+          value: 9,
           orient: 0
         }]);
         break;
@@ -257,7 +322,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'current',
           position: {x: 20, y: 20},
-          val: 0.001,
+          value: 0.001,
           orient: 0
         }]);
         break;
@@ -267,7 +332,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'ground',
           position: {x: 20, y: 20},
-          val: 0.001,
+          value: 0.001,
           orient: 0
         }]);
         break;
@@ -277,7 +342,7 @@ export function ConnectionGrid() {
           id: incUid(),
           type: 'vpin',
           position: {x: 20, y: 20},
-          val: 0.001,
+          value: 0.001,
           orient: 0
         }]);
         break;
@@ -302,6 +367,11 @@ export function ConnectionGrid() {
       window.removeEventListener("keydown", onKeyDown);
     }
   }, []);
+
+  const pathContext = useContext(PathContext);
+  useEffect(() => {
+    loadExample(pathContext);
+  }, [pathContext])
   //console.log(center, windowSize);
 
   return <>
@@ -319,13 +389,14 @@ export function ConnectionGrid() {
                 id: c.id,
                 key: c.id,
                 position: c.position,
-                value: c.val,
+                value: c.value,
                 orient: c.orient,
                 setValue,
                 setPosition,
                 setOrientation,
                 onDelete,
-                onLabel
+                onLabel,
+                disableInput
               };
               switch(c.type) {
                 case 'resistor':

@@ -1,0 +1,19 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "A resistor resists the flow of current."},
+    {"dt": 2, "type": "component", "element": {"id": "1", "type": "resistor", "value": 2000, "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"dt": 3, "type": "text", "text": "Its resistance is measured in Ohms."},
+    {"dt": 3, "type": "component", "element": {"id": "2", "type": "voltage", "value": 24, "position": {"x": -60, "y": 100}, "orient": 3}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "v", "x": -60, "sy": 20, "ey": 60}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": -60, "ex": -20}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 60, "ex": 100}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "v", "x": 100, "sy": 20, "ey": 180}},
+    {"dt": 0.1, "type": "component", "element": {"id": "3", "type": "ground", "position": {"x": 100, "y": 220}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 180, "sx": -60, "ex": 100}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "v", "x": -60, "sy": 140, "ey": 180}},
+    {"dt": 0.1, "type": "component", "element": {"id": "4", "type": "vpin", "value": 24, "position": {"x": -60, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "5", "type": "vpin", "value": 0, "position": {"x": 100, "y": 60}, "orient": 0}},
+    {"dt": 1, "type": "text", "text": "Ohm's law (V=IR) determines the relationship between the voltage across a resistor and the current through it."},
+    {"dt": 3, "type": "component", "element": {"id": "6", "tetherId": "1", "type": "clabel", "value": 0.012, "position": {"x": 20, "y": 40}, "orient": 0}}
+  ]
+}

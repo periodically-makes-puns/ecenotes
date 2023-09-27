@@ -2,7 +2,7 @@ import {useEffect, useState, useRef, useContext} from 'react';
 import { ModeContext } from './ConnectionGrid';
 import styles from './draggable.module.css';
 
-export default function Draggable({ id, children, position, setPosition, savePosition, orient, setOrientation, onDelete, onLabel, modify, cLabelOffset }) {
+export default function Draggable({ id, children, position, setPosition, savePosition, orient, setOrientation, onDelete, onLabel, modify, cLabelOffset, disableInput }) {
   savePosition ??= true;
   let [moved, _setMoved] = useState(0);
   const movedRef = useRef(moved);
@@ -31,12 +31,13 @@ export default function Draggable({ id, children, position, setPosition, savePos
   const cLabelOffsetRef = useRef(cLabelOffset);
 
   function onKeyDown(event) {
+    if (disableInput) return;
     switch (event.key) {
       case 'q':
-        setRot(rot => (rot+1) % 4);
+        setRot(rot => (rot+5) % 4);
         break;
       case 'e':
-        setRot(rot => (rot-1) % 4);
+        setRot(rot => (rot+3) % 4);
         break;
       case "Backspace":
         window.removeEventListener("mousemove", onMouseMove);
@@ -63,7 +64,7 @@ export default function Draggable({ id, children, position, setPosition, savePos
             case 'G': factor = 1000000000; break;
             case 'T': factor = 1000000000000; break;
           }
-          factor *= parseInt(res, 10);
+          factor *= parseFloat(res, 10);
         }
         if (!isNaN(factor)) modifyRef.current(keyRef.current, factor);
         break;
@@ -71,6 +72,7 @@ export default function Draggable({ id, children, position, setPosition, savePos
   }
 
   function onMouseDown(event) {
+    if (disableInput) return;
     if (mode == "labelling") {
       onLabelRef.current(keyRef.current, cLabelOffsetRef.current);
     } else if (movedRef.current == 0) {
@@ -79,12 +81,13 @@ export default function Draggable({ id, children, position, setPosition, savePos
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
       window.addEventListener("keydown", onKeyDown);
+      event.stopPropagation();
     }
-    event.stopPropagation();
     event.preventDefault();
   }
 
   function onMouseMove(event) {
+    if (disableInput) return;
     let dx = event.pageX - startPosRef.current.x;
     let dy = event.pageY - startPosRef.current.y;
     if (Math.hypot(dy, dx) > 6 && movedRef.current == 1) {
@@ -99,6 +102,7 @@ export default function Draggable({ id, children, position, setPosition, savePos
   }
 
   function onMouseUp(event) {
+    if (disableInput) return;
     setMoved(0); // snap to grid
     window.removeEventListener("mousemove", onMouseMove);
     window.removeEventListener("mouseup", onMouseUp);
@@ -115,11 +119,18 @@ export default function Draggable({ id, children, position, setPosition, savePos
         setPosRef.current(keyRef.current, center);
       }
     }, [center]);
+    useEffect(() => {
+      if (!savePositionRef.current) {
+        setCenter(position);
+      }
+    }, [position]);
   useEffect(() => {
-    setOrientationRef.current(keyRef.current, rot);
-  }, [center]);
+    if (savePositionRef.current) {
+      setOrientationRef.current(keyRef.current, rot);
+    }
+  }, [rot]);
   return <g className={(moved) ? styles.moving : ""}
-  transform={`translate(${(moved && savePosition) ? center.x : position.x}, ${(moved && savePosition) ? center.y : position.y}) rotate(${90 * rot})`} onMouseDown={onMouseDown}>
+  transform={`translate(${(moved && savePosition) ? center.x : position.x}, ${(moved && savePosition) ? center.y : position.y}) rotate(${90 * ((moved && savePosition) ? rot : orient)})`} onMouseDown={onMouseDown}>
     {children}
   </g>
 }
