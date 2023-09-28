@@ -6,3 +6,7 @@ body {
 .disable-zoom {
   user-zoom: fixed;
 }
+
+.ps-sidebar-container {
+  width: 100%;
+}

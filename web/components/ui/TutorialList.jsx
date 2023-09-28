@@ -19,8 +19,9 @@ export default function TutorialList({ setPath }) {
   }
 
   return <div className={styles.menu}>
-    <Sidebar className={styles.sidebar} collapsed={collapsed} collapsedWidth='0px' width="100%">
-      <Menu rootStyles={{width: "100%"}}>
+    <Sidebar className={styles.sidebar} collapsed={collapsed} collapsedWidth='0px' width="100%" rootStyles={{width: "100%"}}>
+      <Menu>
+        <MenuItem active="false" disabled>Movies</MenuItem>
         <SubMenu label="Components" defaultOpen={true}>
           <MenuItem onClick={handleMenuClick("components/resistor")}>Resistor</MenuItem>
           {/* <MenuItem onClick={handleMenuClick("components/capacitor")}>Capacitor</MenuItem>

@@ -20,7 +20,6 @@ export default function Draggable({ id, children, position, setPosition, savePos
   let [center, setCenter] = useState(position);
 
   let [rot, setRot] = useState(orient);
-  const savePositionRef = useRef(savePosition);
   const setOrientationRef = useRef(setOrientation);
   const setPosRef = useRef(setPosition);
   const modifyRef = useRef(modify);
@@ -107,7 +106,7 @@ export default function Draggable({ id, children, position, setPosition, savePos
     window.removeEventListener("mousemove", onMouseMove);
     window.removeEventListener("mouseup", onMouseUp);
     window.removeEventListener("keydown", onKeyDown);
-    if (savePositionRef.current) {
+    if (savePosition) {
       setCenter(({x,y}) => {return {x: Math.floor(x / 40) * 40 + 20, y: Math.floor(y / 40) * 40 + 20}});
     }
     event.stopPropagation();
@@ -115,17 +114,17 @@ export default function Draggable({ id, children, position, setPosition, savePos
   }
   
     useEffect(() => {
-      if (savePositionRef.current) {
+      if (savePosition) {
         setPosRef.current(keyRef.current, center);
       }
     }, [center]);
     useEffect(() => {
-      if (!savePositionRef.current) {
+      if (!savePosition) {
         setCenter(position);
       }
     }, [position]);
   useEffect(() => {
-    if (savePositionRef.current) {
+    if (savePosition) {
       setOrientationRef.current(keyRef.current, rot);
     }
   }, [rot]);

@@ -15,8 +15,13 @@ import PathContext from '../PathContext';
 export const ModeContext = createContext('normal');
 
 export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) {
-  let [disableInput, setDisableInput] = useState(!inputAllowed);
+  let [disableInput, _setDisableInput] = useState(!inputAllowed);
   console.log(disableInput);
+  const disabledRef = useRef(disableInput);
+  const setDisableInput = (d) => {
+    disabledRef.current = d;
+    _setDisableInput(d);
+  }
   let [moved, setMoved] = useState(0);
   let [startPos, setStartPos] = useState({x: 0, y: 0});
   let [center, setCenter] = useState({x: 0, y: 0});
@@ -157,22 +162,22 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
   }
 
   function onDelete(key) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     setComponents(comp => comp.filter((val) => (val.id != key && val.tetherId != key)));
   }
 
   function onDeleteConn(key) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     setConnections(conn => conn.filter((val) => val.id != key));
   }
 
   function setValue(key, val) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     setComponents(comp => comp.map((c) => (c.id == key) ? {...c, val} : c));
   }
 
   function setPosition(key, pos) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     setComponents(comp => comp.map((c) => {
       if (c.id == key) return {...c, position: pos};
       else if (c.tetherId == key) {
@@ -186,7 +191,7 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
   const rotateFuncs = [({x, y}) => {return {x, y}}, ({x, y}) => {return {x: -y, y: x}}, ({x, y}) => {return {x: -x, y: -y}}, ({x, y}) => {return {x: y, y: -x}}];
 
   function setOrientation(key, orient) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     setComponents(comp => {
       let position = comp.filter((c) => c.id == key)[0].position;
       return comp.map((c) => {
@@ -203,7 +208,7 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
   }
 
   function onLabel(key, offset) {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     console.log("LABEL", key);
     setComponents(comp => {
       let tethered = comp.filter((c) => c.tetherId == key);
@@ -264,7 +269,7 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
   }
 
   let onKeyDown = useCallback((event) => {
-    if (disableInput) return;
+    if (disabledRef.current) return;
     console.log(event.key);
     switch (event.key) {
       case 'r':
