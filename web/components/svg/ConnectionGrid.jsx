@@ -11,6 +11,18 @@ import Connection from './circuit/connection';
 import CurrentLabel from './circuit/currentLabel';
 import VoltagePin from './circuit/voltagePin';
 import PathContext from '../PathContext';
+import PNPBJT from './circuit/pnpbjt';
+import NPNBJT from './circuit/npnbjt';
+import PMOSFET from './circuit/pmosfet';
+import NMOSFET from './circuit/nmosfet';
+import Diode from './circuit/diode';
+import LED from './circuit/led';
+import Thermistor from './circuit/thermistor';
+import PhotoResistor from './circuit/photoresistor';
+import SPSTSwitch from './circuit/spst';
+import SPDTSwitch from './circuit/spdt';
+import DPSTSwitch from './circuit/dpst';
+import DPDTSwitch from './circuit/dpdt';
 
 export const ModeContext = createContext('normal');
 
@@ -276,9 +288,29 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
     switch (event.key) {
       case 'r':
         event.preventDefault();
+        if (event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'photoresistor',
+            position: {x: 20, y: 20},
+            value: 220,
+            orient: 0
+          });
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'resistor',
+            position: {x: 20, y: 20},
+            value: 220,
+            orient: 0
+          });
+        }
+        break;
+      case 'R':
+        event.preventDefault();
         addComponent({
           id: incUid(),
-          type: 'resistor',
+          type: 'thermistor',
           position: {x: 20, y: 20},
           value: 220,
           orient: 0
@@ -286,80 +318,174 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
         break;
       case 'o':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'opamp',
           position: {x: 20, y: 20},
           orient: 0
-        }]);
+        });
         break;
       case 'c':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'capacitor',
           position: {x: 20, y: 20},
           value: 0.000001,
           orient: 0
-        }]);
+        });
         break;
       case 'l':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'inductor',
           position: {x: 20, y: 20},
           value: 1,
           orient: 0
-        }]);
+        });
         break;
       case 'v':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'voltage',
           position: {x: 20, y: 20},
           value: 9,
           orient: 0
-        }]);
+        });
         break;
       case 'i':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'current',
           position: {x: 20, y: 20},
           value: 0.001,
           orient: 0
-        }]);
+        });
         break;
       case 'g':
         event.preventDefault();
-        setComponents(comp => [...comp, {
+        addComponent({
           id: incUid(),
           type: 'ground',
           position: {x: 20, y: 20},
           value: 0.001,
           orient: 0
-        }]);
+        });
         break;
-      case 'p':
+      case 'N':
         event.preventDefault();
-        setComponents(comp => [...comp, {
-          id: incUid(),
-          type: 'vpin',
-          position: {x: 20, y: 20},
-          value: 0.001,
-          orient: 0
-        }]);
+        if (event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'nmosfet',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          });
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'pnpbjt',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          });
+        }
+        break;
+      case 'P':
+        event.preventDefault();
+        if (!event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'npnbjt',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          });
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'pmosfet',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          });
+        }
         break;
       case 'd':
         event.preventDefault();
+        if (event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'led',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          })
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'diode',
+            position: {x: 20, y: 20},
+            value: 0.001,
+            orient: 0
+          });
+        }
+        break;
+      case 's':
+        event.preventDefault();
+        if (event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'spdt',
+            position: {x: 20, y: 20},
+            value: 0,
+            orient: 0
+          });
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'spst',
+            position: {x: 20, y: 20},
+            value: 0,
+            orient: 0
+          });
+        }
+        break;
+      case 'S':
+        event.preventDefault();
+        if (event.altKey) {
+          addComponent({
+            id: incUid(),
+            type: 'dpdt',
+            position: {x: 20, y: 20},
+            value: 0,
+            orient: 0
+          });
+        } else {
+          addComponent({
+            id: incUid(),
+            type: 'dpst',
+            position: {x: 20, y: 20},
+            value: 0,
+            orient: 0
+          });
+        }
+        break;
+      case 'z':
+        event.preventDefault();
         setMode(mode => {return {drawing: 'normal', normal: 'drawing', labelling: 'labelling'}[mode]});
         break;
-      case 't':
+      case 'x':
         event.preventDefault();
         setMode(mode => {return {drawing: 'drawing', normal: 'labelling', labelling: 'normal'}[mode]});
+        break;
+      case 'Escape':
+        event.preventDefault();
+        setMode('normal');
         break;
     }
   }, [components]);
@@ -408,6 +534,10 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
               switch(c.type) {
                 case 'resistor':
                   return <Resistor {...props}/>;
+                case 'thermistor':
+                  return <Thermistor {...props}/>;
+                case 'photoresistor':
+                  return <PhotoResistor {...props}/>;
                 case 'opamp':
                   return <OpAmp {...props}/>;
                 case 'capacitor':
@@ -424,6 +554,27 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
                   return <Ground {...props}/>;
                 case 'clabel':
                   return <CurrentLabel offset={c.offset} {...props}/>;
+                case 'pnpbjt':
+                  return <PNPBJT {...props}/>;
+                case 'npnbjt':
+                  return <NPNBJT {...props}/>;
+                case 'pmosfet':
+                  return <PMOSFET {...props}/>;
+                case 'nmosfet':
+                  return <NMOSFET {...props}/>;
+                case 'diode':
+                  return <Diode {...props}/>;
+                case 'led':
+                  return <LED {...props}/>;
+                case 'spst':
+                  return <SPSTSwitch {...props}/>;
+                case 'spdt':
+                  return <SPDTSwitch {...props}/>;
+                case 'dpst':
+                  return <DPSTSwitch {...props}/>;
+                case 'dpdt':
+                  return <DPDTSwitch {...props}/>;
+                
               }
             })}
           </ModeContext.Provider>
