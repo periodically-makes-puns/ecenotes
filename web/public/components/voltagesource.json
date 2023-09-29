@@ -1,0 +1,21 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "A voltage source supplies EMF (electromotive force) to a circuit."},
+    {"dt": 2, "type": "component", "element": {"id": "A", "type": "voltage", "value": 9, "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"dt": 2, "type": "text", "text": "This manifests as a constant voltage across the voltage source, enforced by the voltage source."},
+    {"dt": 1, "type": "component", "element": {"id": "G", "type": "ground", "position": {"x": -60, "y": 60}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "E", "type": "vpin", "value": 0, "position": {"x": -60, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": -60, "ex": -20}},
+    {"dt": 0.1, "type": "component", "element": {"id": "F", "type": "vpin", "value": 9, "position": {"x": 140, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 60, "ex": 140}},
+    {"dt": 4, "type": "text", "text": "An ideal voltage source can supply an arbitrary amount of current through it; however, most real voltage sources cannot supply infinite current."},
+    {"dt": 1, "type": "component", "element": {"id": "B", "tetherId": "A", "type": "clabel", "value": 0, "position": {"x": 20, "y": 65}, "orient": 0}},
+    {"dt": 4, "type": "text", "text": "During analysis, we usually assume a voltage source can supply any value of current except infinity, which occurs when a voltage source is shorted."},
+    {"dt": 4, "type": "component", "element": {"id": "H", "type": "ground", "position": {"x": 140, "y": 60}, "orient": 0}},
+    {"dt": 0, "type": "modifyValue", "id": "F", "value": 0},
+    {"dt": 0, "type": "modifyValue", "id": "B", "value": 100000000000000},
+    {"dt": 0.2, "type": "text", "text": "Please imagine the voltage source exploding. (Real voltage sources usually just rapidly discharge instead of blowing up.)"},
+    {"dt": 1, "type": "delComponent", "id": "A"},
+    {"dt": 2, "type": "text", "text": "If your voltage source has safeguards against shorts, it will instead output a lower voltage than listed. [END]"}
+  ]
+}

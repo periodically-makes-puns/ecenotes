@@ -1,0 +1,19 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "A current source supplies a constant current to a circuit."},
+    {"dt": 2, "type": "component", "element": {"id": "A", "type": "current", "value": 0.009, "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "G", "type": "ground", "position": {"x": -60, "y": 60}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": -60, "ex": -20}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 60, "ex": 140}},
+    {"dt": 0.1, "type": "component", "element": {"id": "R1", "type": "resistor", "value": 200, "position": {"x": 180, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 220, "ex": 260}},
+    {"dt": 0.1, "type": "component", "element": {"id": "H", "type": "ground", "position": {"x": 260, "y": 60}, "orient": 0}},
+    {"dt": 4, "type": "text", "text": "An ideal current source can drop an arbitrary amount of voltage across it."},
+    {"dt": 0.1, "type": "component", "element": {"id": "E", "type": "vpin", "value": 0, "position": {"x": -60, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "P1", "type": "vpin", "value": 1.8, "position": {"x": 100, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "F", "type": "vpin", "value": 0, "position": {"x": 260, "y": 20}, "orient": 0}},
+    {"dt": 4, "type": "text", "text": "During analysis, we usually assume a current source can have any voltage at its two terminals (determined by the surrounding circuit)."},
+    {"dt": 1, "type": "modifyValue", "id": "R1", "value": 20000},
+    {"dt": 0, "type": "modifyValue", "id": "P1", "value": 180}
+  ]
+}

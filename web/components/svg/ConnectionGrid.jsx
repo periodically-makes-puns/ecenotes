@@ -171,9 +171,9 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
     setConnections(conn => conn.filter((val) => val.id != key));
   }
 
-  function setValue(key, val) {
+  function setValue(key, value) {
     if (disabledRef.current) return;
-    setComponents(comp => comp.map((c) => (c.id == key) ? {...c, val} : c));
+    setComponents(comp => comp.map((c) => (c.id == key) ? {...c, value} : c));
   }
 
   function setPosition(key, pos) {
@@ -256,6 +256,8 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
               case "text": setTextRef.current(item.text); break;
               case "connection": addConnection(item.conn); break;
               case "component": addComponent(item.element); break;
+              case "modifyValue": setComponents(comp => comp.map((c) => (c.id == item.id) ? {...c, value: item.value} : c)); break; 
+              case "delComponent": setComponents(comp => comp.filter((c) => (c.id != item.id && c.tetherId != item.id))); break;
             }
           }, t * 1000);
         }

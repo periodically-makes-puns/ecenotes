@@ -24,10 +24,10 @@ export default function TutorialList({ setPath }) {
         <MenuItem active="false" disabled>Movies</MenuItem>
         <SubMenu label="Components" defaultOpen={true}>
           <MenuItem onClick={handleMenuClick("components/resistor")}>Resistor</MenuItem>
-          {/* <MenuItem onClick={handleMenuClick("components/capacitor")}>Capacitor</MenuItem>
+          <MenuItem onClick={handleMenuClick("components/capacitor")}>Capacitor</MenuItem>
           <MenuItem onClick={handleMenuClick("components/inductor")}>Inductor</MenuItem>
-          <MenuItem onClick={handleMenuClick("components/voltage_source")}>Voltage Source</MenuItem>
-          <MenuItem onClick={handleMenuClick("components/current_source")}>Current Source</MenuItem> */}
+          <MenuItem onClick={handleMenuClick("components/voltagesource")}>Voltage Source</MenuItem>
+          <MenuItem onClick={handleMenuClick("components/currentsource")}>Current Source</MenuItem>
         </SubMenu>
       </Menu>
     </Sidebar>

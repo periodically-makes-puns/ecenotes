@@ -15,8 +15,9 @@ export default function Help() {
         <div className={[styles.helpBox,helpBoxStyle].join(" ")}>
           <HotkeyTable />
           <div className={styles.githubLink}>
-          By Eric Yang.
-          <a href="https://github.com/periodically-makes-puns/ecenotes/">GitHub</a>
+            <p>To delete an element, grab it then press Backspace.</p>
+            By Eric Yang.
+            <a href="https://github.com/periodically-makes-puns/ecenotes/">GitHub</a>
           </div>
         </div>
       <button type="button" className={styles.helpButton} onClick={onClick}>?</button>
