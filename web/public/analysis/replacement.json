@@ -1,0 +1,31 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "Whenever a part of a circuit can be 'replaced' by an identical component..."},
+    {"dt": 4, "type": "text", "text": "It means that, viewing from the perspective of the two nodes that separate that part from the rest of the circuit..."},
+    {"dt": 0.1, "type": "component", "element": {"id": "V1", "type": "voltage", "value": 24, "position": {"x": -60, "y": 60}, "orient": 3}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": -60, "ex": -20}},
+    {"dt": 0.1, "type": "component", "element": {"id": "R1", "type": "resistor", "value": 2000, "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "R2", "type": "resistor", "value": 4000, "position": {"x": 100, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "v", "x": 140, "sy": 20, "ey": 100}},
+    {"dt": 0.1, "type": "component", "element": {"id": "G", "type": "ground", "position": {"x": 140, "y": 140}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 100, "sx": -60, "ex": 140}},
+    {"dt": 0.1, "type": "component", "element": {"id": "IR", "tetherId": "R1", "type": "clabel", "value": 0.004, "position": {"x": 20, "y": 40}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "V+", "type": "vpin", "value": 24, "position": {"x": -60, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "V-", "type": "vpin", "value": 0, "position": {"x": 140, "y": 100}, "orient": 0}},
+    {"dt": 4, "type": "text", "text": "...The replacement behaves exactly the same in terms of VOLTAGE across and CURRENT through."},
+    {"dt": 4, "type": "text", "text": "For example, two resistors in series can be replaced by one resistor with the sum of their resistances. (Req = R1 + R2)"},
+    {"dt": 1, "type": "delComponent", "id": "R1"},
+    {"dt": 1, "type": "delComponent", "id": "R2"},
+    {"dt": 3, "type": "connection", "conn": {"type": "h", "y": 20, "sx": -20, "ex": 20}},
+    {"dt": 0.1, "type": "component", "element": {"id": "R2", "type": "resistor", "value": 6000, "position": {"x": 60, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "IR", "tetherId": "R1", "type": "clabel", "value": 0.004, "position": {"x": 60, "y": 40}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 100, "ex": 140}},
+    {"dt": 4, "type": "text", "text": "Two resistors in parallel sum their conductances. This manifests as the clunky equation Req = 1/(1/R1 + 1/R2)."},
+    {"dt": 4, "type": "text", "text": "In general, most components either sum in series or sum in parallel. If they sum normally in one of these, they will often sum their inverses in the other."},
+    {"dt": 4, "type": "text", "text": "Capacitors, for instance, sum in parallel and use Ceq = 1/(1/C1 + 1/C2) in series."},
+    {"dt": 2, "type": "text", "text": "Inductors sum in series and use Leq = 1/(1/L1 + 1/L2) in parallel."},
+    {"dt": 2, "type": "text", "text": "Voltage sources sum in series and should not be placed in parallel."},
+    {"dt": 2, "type": "text", "text": "Current sources sum in parallel and should not be placed in series."},
+    {"dt": 2, "type": "text", "text": "Op-amps, diodes, and transistors are all nonlinear and thus cannot be easily combined. [END]"}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "Knowing SI Units lets you solve a lot of problems when you don't remember the exact formulas."},
+    {"dt": 3, "type": "text", "text": "The Coulomb is a unit measuring charge. Amperes measure the flow of charge, so they are Coulombs per second."},
+    {"dt": 3, "type": "text", "text": "Joules measure energy, and Watts measure energy per second, or power."},
+    {"dt": 3, "type": "text", "text": "Volts measure how much energy it takes to move charge, so their unit is energy per charge or Joules per Coulomb."},
+    {"dt": 3, "type": "text", "text": "Ohms measure resistance, and using Ohm's law (V=I/R) it follows that Ohms are Volts per Ampere."},
+    {"dt": 3, "type": "text", "text": "Farads measure the amount of charge stored per volt, so they are Coulombs per Volt."},
+    {"dt": 3, "type": "text", "text": "Henries measure the amount of voltage dropped in proportion to change in current over time, so they are Volt-seconds per Ampere."},
+    {"dt": 3, "type": "text", "text": "That last one can also be written as Ohm-seconds, and Farads can also be expressed as seconds per Ohm."},
+    {"dt": 3, "type": "text", "text": "This becomes useful when you analyse RL and RC circuits."}
+  ]
+}

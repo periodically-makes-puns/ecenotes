@@ -23,9 +23,11 @@ export default function TutorialList({ setPath }) {
       <Menu>
         <MenuItem active="false" disabled>Movies</MenuItem>
         <SubMenu label="Components" defaultOpen={true}>
-          <MenuItem onClick={handleMenuClick("components/resistor")}>Resistor</MenuItem>
+          <MenuItem onClick={handleMenuClick("components/resistor")}>Resistors</MenuItem>
           <MenuItem onClick={handleMenuClick("components/capacitor")}>Capacitor</MenuItem>
           <MenuItem onClick={handleMenuClick("components/inductor")}>Inductor</MenuItem>
+          <MenuItem onClick={handleMenuClick("components/diode")}>Diodes</MenuItem>
+          <MenuItem onClick={handleMenuClick("components/switch")}>Switches</MenuItem>
           <MenuItem onClick={handleMenuClick("components/voltagesource")}>Voltage Source</MenuItem>
           <MenuItem onClick={handleMenuClick("components/currentsource")}>Current Source</MenuItem>
           <SubMenu label="Op-Amps">
@@ -35,6 +37,10 @@ export default function TutorialList({ setPath }) {
             <MenuItem onClick={handleMenuClick("components/bjt")}>BJTs</MenuItem>
             <MenuItem onClick={handleMenuClick("components/mosfet")}>MOSFETs</MenuItem>
           </SubMenu>
+        </SubMenu>
+        <SubMenu label="Circuit Analysis">
+          <MenuItem onClick={handleMenuClick("analysis/replacement")}>Basic Replacement</MenuItem>
+          <MenuItem onClick={handleMenuClick("analysis/units")}>SI Units</MenuItem>
         </SubMenu>
       </Menu>
     </Sidebar>
