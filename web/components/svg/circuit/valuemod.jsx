@@ -1,5 +1,5 @@
-import CircuitComponent from './generic';
-import ValueLabel from './valueLabel';
+import CircuitComponent from "./generic";
+import ValueLabel from "./valueLabel";
 
 export default function ValueModifiableComponent({ path, setValue, labelOffset, alignment, verticalAlignment, value, unit, children, color, ...leftover}) {
   alignment ??= "end";
@@ -8,4 +8,4 @@ export default function ValueModifiableComponent({ path, setValue, labelOffset, 
     {children}
     <ValueLabel position={labelOffset} alignment={alignment} verticalAlignment={verticalAlignment} value={value} unit={unit}></ValueLabel>
   </CircuitComponent>;
-};
+}

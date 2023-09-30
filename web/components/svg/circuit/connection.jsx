@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from "react";
 
 export default function Connection({id, start, end, onDelete, ...leftover}) {
   let [selected, _setSelected] = useState(false);
@@ -6,7 +6,7 @@ export default function Connection({id, start, end, onDelete, ...leftover}) {
   const setSelected = (d) => {
     _setSelected(d);
     selRef.current = d;
-  }
+  };
   const idRef = useRef(id);
   const onDelRef = useRef(onDelete);
   function onKeyDown(event) {
@@ -33,8 +33,8 @@ export default function Connection({id, start, end, onDelete, ...leftover}) {
     window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-    }
-  },[])
+    };
+  },[]);
 
   return <g onMouseDown={onMouseDown}>
     <rect x={start.x - ((end.x-start.x) ? 0 : 5)} y={start.y - ((end.y-start.y) ? 0 : 5)} width={Math.max(end.x-start.x, 10)} height={Math.max(end.y-start.y, 10)} opacity={0}></rect>

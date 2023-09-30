@@ -1,4 +1,4 @@
-import Hotkey from './Hotkey';
+import Hotkey from "./Hotkey";
 
 export default function HotkeyTable() {
   return <table>
@@ -20,5 +20,5 @@ export default function HotkeyTable() {
       <Hotkey hotkey="z" desc="Toggle Drawing Mode" />
       <Hotkey hotkey="x" desc="Toggle Labelling Mode" />
     </tbody>
-  </table>
+  </table>;
 }

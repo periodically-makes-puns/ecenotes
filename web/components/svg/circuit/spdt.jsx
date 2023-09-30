@@ -14,4 +14,4 @@ a 5 5 0 0 1 -10 0 m 10 0 h 20
 M -15 0 L 15  
  ${(value) ? "40" : "-40"}`} fill="black" stroke="black" />
   </CircuitComponent>;
-};
+}

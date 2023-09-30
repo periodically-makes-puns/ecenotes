@@ -25,4 +25,4 @@ m -30 -80
 a 5 5 0 1 1 10 0 m -10 0
 a 5 5 1 0 0 10 0 h 20 ${(value) ? ON : OFF}`} fill="black" stroke="black" />
   </CircuitComponent>;
-};
+}

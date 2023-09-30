@@ -9,4 +9,4 @@ export default function OpAmp({position, ...rest}) {
       M -56 -35 h 20 m -10 -10 v 20
       M -56 35 h 20" fill="transparent" stroke="black" />
   </CircuitComponent>;
-};
+}

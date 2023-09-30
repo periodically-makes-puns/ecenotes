@@ -1,4 +1,4 @@
-import styles from './valuelabel.module.css';
+import styles from "./valuelabel.module.css";
 const SIprefixes = ["p", "n", "μ", "m", "", "k", "M", "G", "T"];
 const NO_MUL = 4;
 
@@ -6,7 +6,7 @@ export default function ValueLabel({position, alignment, verticalAlignment, valu
   console.log(value);
   let unitPrefix = NO_MUL;
   let neg;
-  if (typeof value == 'number') {
+  if (typeof value == "number") {
     neg = value < 0;
     if (value < 0) value = -value;
     if (value > 0) {
@@ -20,5 +20,5 @@ export default function ValueLabel({position, alignment, verticalAlignment, valu
     if (neg) value = -value;
     value = Math.round(value*1000)/1000;
   }
-  return <text className={styles.valuelabel} x={position.x} y={position.y} textAnchor={alignment} dominantBaseline={verticalAlignment}>{value + ((typeof value == 'number') ? (SIprefixes[unitPrefix] + unit) : "")}</text>
+  return <text className={styles.valuelabel} x={position.x} y={position.y} textAnchor={alignment} dominantBaseline={verticalAlignment}>{value + ((typeof value == "number") ? (SIprefixes[unitPrefix] + unit) : "")}</text>;
 }

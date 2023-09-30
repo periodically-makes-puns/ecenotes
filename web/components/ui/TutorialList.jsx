@@ -1,6 +1,6 @@
-import styles from './tutoriallist.module.css';
-import { useState } from 'react';
-import {Sidebar, SubMenu, Menu, MenuItem} from 'react-pro-sidebar'
+import styles from "./tutoriallist.module.css";
+import { useState } from "react";
+import {Sidebar, SubMenu, Menu, MenuItem} from "react-pro-sidebar";
 
 
 export default function TutorialList({ setPath }) {
@@ -14,7 +14,7 @@ export default function TutorialList({ setPath }) {
 
   function handleMenuClick(toLoad) {
     return () => {
-      setPath(toLoad)
+      setPath(toLoad);
     };
   }
 
@@ -45,9 +45,9 @@ export default function TutorialList({ setPath }) {
       </Menu>
     </Sidebar>
     <button onClick={handleClick} className={styles.menuButton} type="button">
-      <svg style={{textAlign: 'center'}} height="100%" width="100%" viewBox="-10 -10 20 20">
+      <svg style={{textAlign: "center"}} height="100%" width="100%" viewBox="-10 -10 20 20">
         <path d="M -10 -10 h 20 M -10 0 h 20 M -10 10 h 20" stroke="black"></path>
       </svg>
     </button>
-  </div>
-};
+  </div>;
+}

@@ -1,4 +1,4 @@
-import ValueModifiableComponent from './valuemod';
+import ValueModifiableComponent from "./valuemod";
 
 const PATH = `M -40 0 h 10
 M 40 0 h -10
@@ -9,6 +9,6 @@ M 26 0 h -10 m 5 -5 v 10`, UNIT = "V", POS = {x: 40, y: -32}, BOX = {x: -40, y: 
 
 export default function VoltageSource(props) {
   return <ValueModifiableComponent boundingBox={BOX}
-   unit={UNIT} labelOffset={POS} path={PATH} {...props}>
+    unit={UNIT} labelOffset={POS} path={PATH} {...props}>
   </ValueModifiableComponent>;
-};
+}

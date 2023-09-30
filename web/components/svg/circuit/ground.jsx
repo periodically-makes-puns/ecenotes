@@ -7,4 +7,4 @@ export default function Ground({position, ...rest}) {
       m -3 3 h -14
       m 3 3 h 8" fill="transparent" stroke="black" />
   </CircuitComponent>;
-};
+}

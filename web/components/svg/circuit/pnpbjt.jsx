@@ -9,6 +9,6 @@ M -40 0 H -20
 M 0 -40 v 15 L -20 -10
 M 0 40 v -15 m -4 -3 L -20 10
 M -20 15 v -30" fill="transparent" stroke="black" />
-<path d="M 0 25 l -1 -7 l -6 8 z" fill="black"></path>
+    <path d="M 0 25 l -1 -7 l -6 8 z" fill="black"></path>
   </CircuitComponent>;
-};
+}
