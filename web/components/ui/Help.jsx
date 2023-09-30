@@ -15,7 +15,7 @@ export default function Help() {
         <div className={[styles.helpBox,helpBoxStyle].join(" ")}>
           <HotkeyTable />
           <div className={styles.githubLink}>
-            <p>To delete an element, grab it then press Backspace. Alternative versions of components can be accessed with Alt and Shift.</p>
+            <p>To delete an element, grab it then press Backspace. Alternative versions of components can be accessed with Alt and Shift. Space to recenter.</p>
             By Eric Yang.
             <a href="https://github.com/periodically-makes-puns/ecenotes/">GitHub</a>
           </div>

@@ -497,6 +497,10 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
         event.preventDefault();
         setMode('normal');
         break;
+      case ' ':
+        event.preventDefault();
+        setCenter({x: 0, y: 0});
+        break;
     }
   }, [components]);
 
