@@ -66,6 +66,7 @@ export default function Draggable({ id, children, position, setPosition, savePos
           factor *= parseFloat(res, 10);
         }
         if (!isNaN(factor)) modifyRef.current(keyRef.current, factor);
+        else modifyRef.current(keyRef.current, res); // fallthrough
         break;
     } 
   }
