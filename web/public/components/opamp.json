@@ -1,0 +1,19 @@
+{
+  "deltas": [
+    {"dt": 0, "type": "text", "text": "An Operational Amplifier (op-amp) amplifies the voltage across its terminals."},
+    {"dt": 2, "type": "component", "element": {"id": "OPAMP", "type": "opamp", "position": {"x": 20, "y": 20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "V+", "type": "vpin", "value": 0, "position": {"x": -60, "y": -20}, "orient": 0}},
+    {"dt": 0.1, "type": "component", "element": {"id": "V-", "type": "vpin", "value": 0, "position": {"x": -60, "y": 60}, "orient": 0}},
+    {"dt": 0.1, "type": "connection", "conn": {"type": "h", "y": 20, "sx": 100, "ex": 140}},
+    {"dt": 0.1, "type": "component", "element": {"id": "Vo", "type": "vpin", "value": 0, "position": {"x": 140, "y": 20}, "orient": 0}},
+    {"dt": 3, "type": "text", "text": "An ideal op-amp has an infinite open-loop gain, but in practice its voltage is capped at the voltage supply provided to the opamp (Vcc+, Vcc-)."},
+    {"dt": 4, "type": "text", "text": "I forgot to add Vcc pins for the op-amp, so assume that the op-amp ranges from -15V to 15V, since that's the cap on the lab power supply."},
+    {"dt": 3, "type": "text", "text": "When there is any difference across the two terminals, the opamp amplifies it by a very large factor, up to its cap."},
+    {"dt": 1, "type": "modifyValue", "id": "V+", "value": 0.000001},
+    {"dt": 0, "type": "modifyValue", "id": "Vo", "value": 15},
+    {"dt": 3, "type": "text", "text": "Ideal op-amps have infinite input impedance (no current in) and no output impedance (arbitrary current out)."},
+    {"dt": 3, "type": "text", "text": "This means that one can safely use KCL at its input terminals without considering the current in..."},
+    {"dt": 3, "type": "text", "text": "...and assume that the op-amp will output whatever current is necessary to satisfy KCL at its output."},
+    {"dt": 3, "type": "text", "text": "[cont. in Inverting Op-Amps]"}
+  ]
+}

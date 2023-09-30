@@ -355,6 +355,16 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
           orient: 0
         });
         break;
+        case 'v':
+          event.preventDefault();
+          addComponent({
+            id: incUid(),
+            type: 'vpin',
+            position: {x: 20, y: 20},
+            value: 0,
+            orient: 0
+          });
+          break;
       case 'i':
         event.preventDefault();
         addComponent({
@@ -422,7 +432,7 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
             id: incUid(),
             type: 'led',
             position: {x: 20, y: 20},
-            value: 0.001,
+            value: 0,
             orient: 0
           })
         } else {
@@ -430,7 +440,7 @@ export function ConnectionGrid({ setText, inputAllowed, setPath, clearBuffer }) 
             id: incUid(),
             type: 'diode',
             position: {x: 20, y: 20},
-            value: 0.001,
+            value: 0,
             orient: 0
           });
         }

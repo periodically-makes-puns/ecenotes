@@ -28,6 +28,13 @@ export default function TutorialList({ setPath }) {
           <MenuItem onClick={handleMenuClick("components/inductor")}>Inductor</MenuItem>
           <MenuItem onClick={handleMenuClick("components/voltagesource")}>Voltage Source</MenuItem>
           <MenuItem onClick={handleMenuClick("components/currentsource")}>Current Source</MenuItem>
+          <SubMenu label="Op-Amps">
+            <MenuItem onClick={handleMenuClick("components/opamp")}>Intro</MenuItem>
+          </SubMenu>
+          <SubMenu label="Transistors">
+            <MenuItem onClick={handleMenuClick("components/bjt")}>BJTs</MenuItem>
+            <MenuItem onClick={handleMenuClick("components/mosfet")}>MOSFETs</MenuItem>
+          </SubMenu>
         </SubMenu>
       </Menu>
     </Sidebar>
