@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint --fix components/**/*.{jsx,tsx} pages/_app.js"
+    "lint": "eslint --fix components/**/*.{ts,tsx} pages/_app.tsx"
   },
   "devDependencies": {
     "@types/node": "20.8.0",
